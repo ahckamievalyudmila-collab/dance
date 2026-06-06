@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Студия танца — Учёт 2026</title>
+<style>
+:root{--bg:#0f0e0c;--s1:#1a1814;--s2:#242018;--b:#2e2a22;--gold:#c9a84c;--gl:#e8c97a;--gd:#7a6430;--red:#c0392b;--green:#27ae60;--blue:#3a7abd;--text:#e8e0d0;--dim:#8a7f6e;--muted:#4a4438}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;font-size:14px}
+/* HEADER */
+.hdr{background:var(--s1);border-bottom:1px solid var(--b);padding:12px 16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{font-size:18px;font-weight:700;color:var(--gold);line-height:1.1}
+.logo small{display:block;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.hdr-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+/* TABS */
+.tabs{display:flex;background:var(--s1);border-bottom:1px solid var(--b);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 16px;border:none;background:none;color:var(--dim);font-size:11px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+/* MAIN */
+.main{padding:16px;max-width:700px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--b);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.card-head{padding:11px 14px;border-bottom:1px solid var(--b);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--s1);border:1px solid var(--b);border-radius:6px;padding:14px}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px}
+.stat-val{font-size:24px;font-weight:700;color:var(--gold)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
+/* STUDENT CARDS */
+.stu-card{background:var(--s1);border:1px solid var(--b);border-radius:6px;padding:14px;margin-bottom:10px}
+.stu-name{font-size:15px;font-weight:600;margin-bottom:6px}
+.stu-meta{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.stu-stats{display:flex;gap:14px;margin-bottom:12px;font-size:12px;color:var(--dim)}
+.stu-stats span{color:var(--text)}
+.stu-bal{font-size:22px;font-weight:700}
+.stu-btns{display:flex;gap:8px}
+/* BADGES */
+.bg1{display:inline-block;padding:3px 8px;border-radius:3px;font-size:10px;background:#1a2a1a;color:#4caf7a;border:1px solid #2a4a2a}
+.bg2{display:inline-block;padding:3px 8px;border-radius:3px;font-size:10px;background:#1a1a2a;color:#6a7caf;border:1px solid #2a2a4a}
+.bg3{display:inline-block;padding:3px 8px;border-radius:3px;font-size:10px;background:#2a1a2a;color:#af6aaf;border:1px solid #3a2a3a}
+.cash{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;background:#2a1f0a;color:#e8a030;border:1px solid #5a3a0a}
+.card-pay{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;background:#0a1a2a;color:#5ab4e8;border:1px solid #0a3a5a}
+/* BUTTONS */
+btn,.btn{display:inline-block;padding:9px 14px;border-radius:4px;border:none;cursor:pointer;font-size:12px;letter-spacing:.05em;text-transform:uppercase;font-weight:500;transition:opacity .15s}
+.btn:active{opacity:.7}
+.btn-gold{background:var(--gd);color:var(--gl);border:1px solid var(--gold)}
+.btn-green{background:#1a3a1a;color:#80e880;border:1px solid #30a030}
+.btn-red{background:#3a1a1a;color:#e88080;border:1px solid #a03030}
+.btn-blue{background:#1a2a3a;color:#80b8e8;border:1px solid #2a5a8a}
+.btn-dim{background:var(--s2);color:var(--dim);border:1px solid var(--b)}
+.btn-sm{padding:6px 10px;font-size:11px}
+.btn-full{width:100%;text-align:center;display:block}
+/* INPUTS */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px}
+input,select,textarea{background:var(--s2);border:1px solid var(--b);color:var(--text);padding:10px 12px;border-radius:4px;font-size:14px;width:100%;outline:none;font-family:inherit}
+input:focus,select:focus{border-color:var(--gd)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{padding:9px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--b);background:var(--s2)}
+td{padding:10px 12px;border-bottom:1px solid #1e1c18;font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:flex-end;justify-content:center;padding:0}
+.overlay.hidden{display:none}
+.modal{background:var(--s1);border:1px solid var(--b);border-radius:12px 12px 0 0;padding:20px 18px 32px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+/* FILTER PILLS */
+.filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.filter-pill{padding:6px 12px;border-radius:20px;border:1px solid var(--b);background:var(--s1);color:var(--dim);font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:.06em}
+.filter-pill.on{background:var(--gd);border-color:var(--gold);color:var(--gl)}
+/* MONTH NAV */
+.month-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
+.month-nav button{background:var(--s2);border:1px solid var(--b);color:var(--dim);border-radius:4px;padding:6px 14px;cursor:pointer;font-size:16px}
+.month-nav .mlabel{font-size:15px;font-weight:600;color:var(--text);min-width:130px;text-align:center}
+/* BALANCE BAR */
+.bal-bar{height:4px;border-radius:2px;background:var(--s2);margin-top:6px;overflow:hidden}
+.bal-fill{height:100%;border-radius:2px;background:var(--green)}
+/* SHARE BOX */
+.share-box{background:var(--s2);border:1px solid var(--b);border-radius:6px;padding:14px;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+/* RENT */
+.rent-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--b)}
+.rent-row:last-child{border-bottom:none}
+/* TOGGLE */
+.toggle-row{display:flex;gap:8px;margin-bottom:10px}
+.toggle-btn{flex:1;padding:9px;border-radius:4px;border:1px solid var(--b);background:var(--s2);color:var(--dim);cursor:pointer;font-size:12px;text-align:center}
+.toggle-btn.on{background:var(--gd);border-color:var(--gold);color:var(--gl)}
+/* INCOME TABLE */
+.income-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.income-bar-name{font-size:12px;color:var(--dim);width:180px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.income-bar-track{flex:1;height:16px;background:var(--s2);border-radius:2px;overflow:hidden}
+.income-bar-fill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gold));border-radius:2px}
+.income-bar-val{font-size:11px;color:var(--gl);width:65px;text-align:right;flex-shrink:0}
+/* MONTH TABLE */
+.month-tbl td:first-child{color:var(--dim);font-size:12px}
+/* CHECK LIST */
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:4px;cursor:pointer;margin-bottom:4px;background:var(--s2)}
+.check-item.on{background:#1a2a1a}
+.check-box{width:20px;height:20px;border-radius:4px;border:1px solid var(--b);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.check-item.on .check-box{background:var(--green);border-color:var(--green);color:#fff}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="logo">Студия танца <small>Учёт 2026</small></div>
+  <div class="hdr-btns">
+    <button class="btn btn-green btn-sm" onclick="openModal('mLesson')">+ Занятие</button>
+    <button class="btn btn-gold btn-sm" onclick="openModal('mPayment')">+ Оплата</button>
+    <button class="btn btn-dim btn-sm" onclick="openModal('mStudent')">+ Ученик</button>
+    <button class="btn btn-blue btn-sm" onclick="openModal('mGroup')">+ Группа</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" onclick="showTab('overview',this)">Обзор</button>
+  <button class="tab" onclick="showTab('students',this)">Ученики</button>
+  <button class="tab" onclick="showTab('attendance',this)">Посещения</button>
+  <button class="tab" onclick="showTab('payments',this)">Оплаты</button>
+  <button class="tab" onclick="showTab('finance',this)">Финансы</button>
+  <button class="tab" onclick="showTab('balance',this)">Остатки</button>
+</div>
+
+<div class="main">
+
+<!-- ══ ОБЗОР ══════════════════════════════════════════════════════ -->
+<div class="sec on" id="sec-overview">
+  <div class="stats" id="stats-overview"></div>
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Группы / Залы</span>
+      <button class="btn btn-blue btn-sm" onclick="openModal('mGroup')">+ Новый зал</button>
+    </div>
+    <div id="groups-table"></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Должники</span></div>
+    <div id="debtors-list" style="padding:12px 14px"></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Оплаты по ученикам</span></div>
+    <div id="income-chart" style="padding:14px"></div>
+  </div>
+</div>
+
+<!-- ══ УЧЕНИКИ ════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-students">
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+    <input id="stu-search" placeholder="Поиск..." oninput="renderStudents()" style="flex:1;min-width:120px">
+    <button id="btn-show-frozen" class="btn btn-dim btn-sm" onclick="toggleShowFrozen()">❄ Показать замороженных</button>
+  </div>
+  <div class="filters" id="stu-filters"></div>
+  <div id="students-list"></div>
+</div>
+
+<!-- ══ ПОСЕЩЕНИЯ ══════════════════════════════════════════════════ -->
+<div class="sec" id="sec-attendance">
+  <div class="filters" id="att-filters"></div>
+  <div class="card" id="att-card">
+    <div class="card-head">
+      <span class="card-title" id="att-count-label">Посещения</span>
+      <button class="btn btn-red btn-sm" id="att-del-btn" style="display:none" onclick="deleteSelectedAttend()">Удалить выбранные</button>
+    </div>
+    <div id="att-list"></div>
+  </div>
+</div>
+
+<!-- ══ ОПЛАТЫ ═════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-payments">
+  <div class="filters" id="pay-filters"></div>
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Оплаты</span>
+      <span id="pay-total" style="font-size:12px;color:var(--gl)"></span>
+    </div>
+    <div id="pay-list"></div>
+  </div>
+</div>
+
+<!-- ══ ФИНАНСЫ ════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-finance">
+  <div class="month-nav">
+    <button onclick="finMonth(-1)">‹</button>
+    <div class="mlabel" id="fin-month-label"></div>
+    <button onclick="finMonth(1)">›</button>
+  </div>
+  <div class="stats" id="fin-stats"></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Аренда залов</span>
+      <button class="btn btn-gold btn-sm" onclick="openModal('mRent')">+ Аренда</button>
+    </div>
+    <div id="rent-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Итог по месяцам</span></div>
+    <table class="month-tbl">
+      <thead><tr><th>Месяц</th><th>Доход</th><th>Аренда</th><th>Прибыль</th></tr></thead>
+      <tbody id="month-summary"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ ОСТАТКИ ════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-balance">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+    <div style="font-size:12px;color:var(--dim)">На дату:</div>
+    <input type="date" id="bal-date" style="flex:1;min-width:130px" onchange="renderBalance()">
+    <button class="btn btn-blue btn-sm" onclick="copyBalance()">📋 Копировать</button>
+  </div>
+  <div class="filters" id="bal-filters"></div>
+  <div id="bal-list"></div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><span class="card-title">Текст для рассылки</span></div>
+    <div class="share-box" id="share-text" style="padding:14px"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ══ MODALS ════════════════════════════════════════════════════ -->
+
+<!-- ADD STUDENT -->
+<div class="overlay hidden" id="mStudent">
+  <div class="modal">
+    <div class="modal-title">Новый ученик <button class="modal-close" onclick="closeModal('mStudent')">×</button></div>
+    <div class="field"><label>Имя и фамилия</label><input id="ms-name" placeholder="Фамилия Имя"></div>
+    <div class="field"><label>Группа</label><select id="ms-group"></select></div>
+    <button class="btn btn-gold btn-full" onclick="addStudent()">Добавить</button>
+  </div>
+</div>
+
+<!-- EDIT STUDENT -->
+<div class="overlay hidden" id="mEditStudent">
+  <div class="modal">
+    <div class="modal-title">Редактировать <button class="modal-close" onclick="closeModal('mEditStudent')">×</button></div>
+    <input type="hidden" id="mes-id">
+    <div class="field"><label>Имя и фамилия</label><input id="mes-name"></div>
+    <div class="field"><label>Группа</label><select id="mes-group"></select></div>
+    <button class="btn btn-gold btn-full" onclick="saveEditStudent()">Сохранить</button>
+  </div>
+</div>
+
+<!-- ADD LESSON (MARK ATTENDANCE) -->
+<div class="overlay hidden" id="mLesson">
+  <div class="modal">
+    <div class="modal-title">Отметить занятие <button class="modal-close" onclick="closeModal('mLesson')">×</button></div>
+    <div class="row2">
+      <div class="field"><label>Дата</label><input type="date" id="ml-date"></div>
+      <div class="field"><label>Группа</label><select id="ml-group" onchange="renderCheckList()"></select></div>
+    </div>
+    <div class="field"><label id="ml-count-label">Ученики</label>
+      <div id="ml-checklist" style="max-height:260px;overflow-y:auto;border:1px solid var(--b);border-radius:4px;padding:6px"></div>
+    </div>
+    <button class="btn btn-green btn-full" onclick="saveLesson()">Сохранить</button>
+  </div>
+</div>
+
+<!-- ADD PAYMENT -->
+<div class="overlay hidden" id="mPayment">
+  <div class="modal">
+    <div class="modal-title">Новая оплата <button class="modal-close" onclick="closeModal('mPayment')">×</button></div>
+    <div class="field"><label>Дата</label><input type="date" id="mp-date"></div>
+    <div class="field"><label>Ученик</label><select id="mp-student"></select></div>
+    <div class="row2">
+      <div class="field"><label>Занятий</label><input type="number" id="mp-lessons" placeholder="8"></div>
+      <div class="field"><label>Сумма ₽</label><input type="number" id="mp-amount" placeholder="3200"></div>
+    </div>
+    <div class="field"><label>Способ</label>
+      <div class="toggle-row">
+        <div class="toggle-btn on" id="tb-cash" onclick="setMethod('нал')">💵 Наличные</div>
+        <div class="toggle-btn" id="tb-card" onclick="setMethod('безнал')">💳 Безнал</div>
+      </div>
+    </div>
+    <button class="btn btn-gold btn-full" onclick="savePayment()">Сохранить</button>
+  </div>
+</div>
+
+<!-- ADD RENT -->
+<div class="overlay hidden" id="mRent">
+  <div class="modal">
+    <div class="modal-title">Аренда зала <button class="modal-close" onclick="closeModal('mRent')">×</button></div>
+    <div class="field"><label>Зал</label>
+      <select id="mr-hall">
+        <option value="Юбилейный">Юбилейный (Зал 1 + Зал 2)</option>
+        <option value="Шанталь">Шанталь (Зал 3)</option>
+      </select>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Месяц</label><input type="month" id="mr-month"></div>
+      <div class="field"><label>Сумма ₽</label><input type="number" id="mr-amount" placeholder="15000"></div>
+    </div>
+    <div class="field"><label>Примечание</label><input id="mr-note" placeholder="необязательно"></div>
+    <button class="btn btn-gold btn-full" onclick="saveRent()">Сохранить</button>
+  </div>
+</div>
+
+<!-- ADD GROUP -->
+<div class="overlay hidden" id="mGroup">
+  <div class="modal">
+    <div class="modal-title">Новый зал / группа <button class="modal-close" onclick="closeModal('mGroup')">×</button></div>
+    <div class="field"><label>Помещение</label>
+      <select id="mg-addr" onchange="updateGroupId()">
+        <option value="Юбилейный">Юбилейный</option>
+        <option value="Шанталь">Шанталь</option>
+        <option value="Другой">Другой...</option>
+      </select>
+    </div>
+    <div class="field" id="mg-addr-custom-wrap" style="display:none">
+      <label>Название помещения</label>
+      <input id="mg-addr-custom" placeholder="Название зала" oninput="updateGroupId()">
+    </div>
+    <div class="field"><label>Время занятий</label>
+      <input id="mg-time" placeholder="18:00" oninput="updateGroupId()">
+    </div>
+    <div class="field"><label>Название группы</label>
+      <input id="mg-label" placeholder="Зал 4 · 18:00">
+    </div>
+    <input type="hidden" id="mg-id">
+    <button class="btn btn-gold btn-full" onclick="saveGroup()">Добавить</button>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══════════════════════════════════════════════════════════
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+
+let groups = load('dance_groups',[
+  {id:'Зал1_10:00',label:'Зал 1 · 10:00',addr:'Юбилейный'},
+  {id:'Зал2_19:30',label:'Зал 2 · 19:30',addr:'Юбилейный'},
+  {id:'Зал3_17:30',label:'Зал 3 · 17:30',addr:'Шанталь'},
+]);
+let students = load('dance_students2',[
+  {id:1,name:'Воскресенскова Татьяна',group:'Зал1_10:00',frozen:false},{id:2,name:'Гречишкина Майя',group:'Зал1_10:00'},
+  {id:3,name:'Бабошина Анна',group:'Зал1_10:00'},{id:4,name:'Козак Наталья',group:'Зал1_10:00'},
+  {id:5,name:'Меркулова Любовь',group:'Зал1_10:00'},{id:6,name:'Золотилова Ольга',group:'Зал1_10:00'},
+  {id:7,name:'Чубрей Татьяна',group:'Зал1_10:00'},{id:8,name:'Тимофеева Лена',group:'Зал1_10:00'},
+  {id:9,name:'Черепанова Лида',group:'Зал2_19:30'},{id:10,name:'Кириллова Ольга',group:'Зал2_19:30'},
+  {id:11,name:'Сергеева Людмила',group:'Зал2_19:30'},{id:12,name:'Суровцева Ольга',group:'Зал2_19:30'},
+  {id:13,name:'Ярунова Ирина',group:'Зал2_19:30'},{id:14,name:'Тропина Ольга',group:'Зал3_17:30'},
+  {id:15,name:'Новикова Марина',group:'Зал3_17:30'},{id:16,name:'Осташова Елена',group:'Зал3_17:30'},
+  {id:17,name:'Мельникова Елена',group:'Зал3_17:30'},{id:18,name:'Попова Елена',group:'Зал3_17:30'},
+  {id:19,name:'Яковлева Татьяна',group:'Зал3_17:30'},
+]);
+let attendance = load('dance_att2',[
+  {id:1,date:'2026-04-30',group:'Зал3_17:30',studentId:14},{id:2,date:'2026-04-30',group:'Зал3_17:30',studentId:15},
+  {id:3,date:'2026-04-30',group:'Зал3_17:30',studentId:16},{id:4,date:'2026-04-30',group:'Зал3_17:30',studentId:19},
+  {id:5,date:'2026-05-01',group:'Зал1_10:00',studentId:2},{id:6,date:'2026-05-01',group:'Зал1_10:00',studentId:1},
+  {id:7,date:'2026-05-01',group:'Зал1_10:00',studentId:9},{id:8,date:'2026-05-01',group:'Зал1_10:00',studentId:12},
+  {id:9,date:'2026-05-01',group:'Зал1_10:00',studentId:15},{id:10,date:'2026-05-01',group:'Зал1_10:00',studentId:10},
+  {id:11,date:'2026-05-01',group:'Зал1_10:00',studentId:11},
+  {id:12,date:'2026-05-05',group:'Зал3_17:30',studentId:14},{id:13,date:'2026-05-05',group:'Зал3_17:30',studentId:17},
+  {id:14,date:'2026-05-05',group:'Зал3_17:30',studentId:19},
+  {id:15,date:'2026-05-05',group:'Зал2_19:30',studentId:13},{id:16,date:'2026-05-05',group:'Зал2_19:30',studentId:7},
+  {id:17,date:'2026-05-05',group:'Зал2_19:30',studentId:10},{id:18,date:'2026-05-05',group:'Зал2_19:30',studentId:11},
+  {id:19,date:'2026-05-05',group:'Зал2_19:30',studentId:9},
+  {id:20,date:'2026-05-06',group:'Зал1_10:00',studentId:1},{id:21,date:'2026-05-06',group:'Зал1_10:00',studentId:2},
+  {id:22,date:'2026-05-06',group:'Зал1_10:00',studentId:3},{id:23,date:'2026-05-06',group:'Зал1_10:00',studentId:5},
+  {id:24,date:'2026-05-06',group:'Зал1_10:00',studentId:6},
+  {id:25,date:'2026-05-08',group:'Зал1_10:00',studentId:1},{id:26,date:'2026-05-08',group:'Зал1_10:00',studentId:2},
+  {id:27,date:'2026-05-08',group:'Зал1_10:00',studentId:6},{id:28,date:'2026-05-08',group:'Зал1_10:00',studentId:5},
+  {id:29,date:'2026-05-08',group:'Зал1_10:00',studentId:3},{id:30,date:'2026-05-08',group:'Зал1_10:00',studentId:12},
+  {id:31,date:'2026-05-08',group:'Зал2_19:30',studentId:11},{id:32,date:'2026-05-08',group:'Зал2_19:30',studentId:9},
+  {id:33,date:'2026-05-08',group:'Зал2_19:30',studentId:10},{id:34,date:'2026-05-08',group:'Зал2_19:30',studentId:13},
+  {id:35,date:'2026-05-12',group:'Зал2_19:30',studentId:7},{id:36,date:'2026-05-12',group:'Зал2_19:30',studentId:10},
+  {id:37,date:'2026-05-12',group:'Зал2_19:30',studentId:11},{id:38,date:'2026-05-12',group:'Зал2_19:30',studentId:12},
+  {id:39,date:'2026-05-12',group:'Зал2_19:30',studentId:13},
+  {id:40,date:'2026-05-13',group:'Зал1_10:00',studentId:2},{id:41,date:'2026-05-13',group:'Зал1_10:00',studentId:3},
+  {id:42,date:'2026-05-13',group:'Зал1_10:00',studentId:6},{id:43,date:'2026-05-13',group:'Зал1_10:00',studentId:9},
+  {id:44,date:'2026-05-13',group:'Зал1_10:00',studentId:8},
+  {id:45,date:'2026-05-14',group:'Зал3_17:30',studentId:14},{id:46,date:'2026-05-14',group:'Зал3_17:30',studentId:15},
+  {id:47,date:'2026-05-14',group:'Зал3_17:30',studentId:16},{id:48,date:'2026-05-14',group:'Зал3_17:30',studentId:19},
+  {id:49,date:'2026-05-15',group:'Зал1_10:00',studentId:2},{id:50,date:'2026-05-15',group:'Зал1_10:00',studentId:9},
+  {id:51,date:'2026-05-15',group:'Зал1_10:00',studentId:3},{id:52,date:'2026-05-15',group:'Зал1_10:00',studentId:6},
+  {id:53,date:'2026-05-15',group:'Зал2_19:30',studentId:7},{id:54,date:'2026-05-15',group:'Зал2_19:30',studentId:12},
+  {id:55,date:'2026-05-15',group:'Зал2_19:30',studentId:13},
+  {id:56,date:'2026-05-26',group:'Зал3_17:30',studentId:14},{id:57,date:'2026-05-26',group:'Зал3_17:30',studentId:19},
+  {id:58,date:'2026-05-26',group:'Зал3_17:30',studentId:16},{id:59,date:'2026-05-26',group:'Зал2_19:30',studentId:11},
+  {id:60,date:'2026-05-26',group:'Зал2_19:30',studentId:13},
+  {id:61,date:'2026-05-27',group:'Зал1_10:00',studentId:1},{id:62,date:'2026-05-27',group:'Зал1_10:00',studentId:2},
+  {id:63,date:'2026-05-27',group:'Зал1_10:00',studentId:6},{id:64,date:'2026-05-27',group:'Зал1_10:00',studentId:8},
+  {id:65,date:'2026-05-27',group:'Зал1_10:00',studentId:3},
+  {id:66,date:'2026-05-28',group:'Зал3_17:30',studentId:14},{id:67,date:'2026-05-28',group:'Зал3_17:30',studentId:15},
+  {id:68,date:'2026-05-28',group:'Зал3_17:30',studentId:16},{id:69,date:'2026-05-28',group:'Зал3_17:30',studentId:9},
+  {id:70,date:'2026-05-29',group:'Зал1_10:00',studentId:2},{id:71,date:'2026-05-29',group:'Зал1_10:00',studentId:6},
+  {id:72,date:'2026-05-29',group:'Зал1_10:00',studentId:3},{id:73,date:'2026-05-29',group:'Зал2_19:30',studentId:10},
+  {id:74,date:'2026-05-29',group:'Зал2_19:30',studentId:13},{id:75,date:'2026-05-29',group:'Зал2_19:30',studentId:11},
+  {id:76,date:'2026-05-29',group:'Зал2_19:30',studentId:1},
+  {id:77,date:'2026-06-03',group:'Зал1_10:00',studentId:2},{id:78,date:'2026-06-03',group:'Зал1_10:00',studentId:3},
+  {id:79,date:'2026-06-03',group:'Зал1_10:00',studentId:6},{id:80,date:'2026-06-03',group:'Зал1_10:00',studentId:9},
+  {id:81,date:'2026-06-03',group:'Зал1_10:00',studentId:8},
+  {id:82,date:'2026-06-05',group:'Зал1_10:00',studentId:2},{id:83,date:'2026-06-05',group:'Зал1_10:00',studentId:3},
+  {id:84,date:'2026-06-05',group:'Зал1_10:00',studentId:7},{id:85,date:'2026-06-05',group:'Зал1_10:00',studentId:9},
+]);
+let payments = load('dance_pay2',[
+  {id:1,date:'2026-04-30',studentId:19,lessons:4,amount:2000,method:'нал'},
+  {id:2,date:'2026-04-30',studentId:14,lessons:5,amount:3600,method:'безнал'},
+  {id:3,date:'2026-04-30',studentId:16,lessons:4,amount:2700,method:'безнал'},
+  {id:4,date:'2026-04-30',studentId:15,lessons:2,amount:2000,method:'безнал'},
+  {id:5,date:'2026-04-30',studentId:9,lessons:4,amount:3200,method:'нал'},
+  {id:6,date:'2026-04-30',studentId:13,lessons:null,amount:3100,method:'нал'},
+  {id:7,date:'2026-04-30',studentId:1,lessons:5,amount:3600,method:'безнал'},
+  {id:8,date:'2026-04-30',studentId:2,lessons:4,amount:3200,method:'безнал'},
+  {id:9,date:'2026-04-30',studentId:3,lessons:2,amount:3200,method:'безнал'},
+  {id:10,date:'2026-04-30',studentId:11,lessons:1,amount:3200,method:'безнал'},
+  {id:11,date:'2026-04-30',studentId:4,lessons:0,amount:1600,method:'безнал'},
+  {id:12,date:'2026-04-30',studentId:5,lessons:1,amount:3200,method:'безнал'},
+  {id:13,date:'2026-04-30',studentId:10,lessons:2,amount:3200,method:'безнал'},
+  {id:14,date:'2026-04-30',studentId:17,lessons:1,amount:2000,method:'безнал'},
+  {id:15,date:'2026-04-30',studentId:18,lessons:null,amount:1500,method:'безнал'},
+  {id:16,date:'2026-04-30',studentId:8,lessons:null,amount:3200,method:'безнал'},
+  {id:17,date:'2026-04-30',studentId:6,lessons:3,amount:1600,method:'безнал'},
+  {id:18,date:'2026-04-30',studentId:7,lessons:0,amount:2000,method:'нал'},
+  {id:19,date:'2026-05-01',studentId:12,lessons:4,amount:2580,method:'безнал'},
+  {id:20,date:'2026-05-05',studentId:11,lessons:4,amount:1800,method:'безнал'},
+  {id:21,date:'2026-05-05',studentId:7,lessons:1,amount:500,method:'нал'},
+  {id:22,date:'2026-05-05',studentId:13,lessons:1,amount:500,method:'безнал'},
+  {id:23,date:'2026-05-07',studentId:10,lessons:8,amount:3200,method:'безнал'},
+  {id:24,date:'2026-05-08',studentId:13,lessons:1,amount:500,method:'нал'},
+  {id:25,date:'2026-05-12',studentId:7,lessons:1,amount:500,method:'нал'},
+  {id:26,date:'2026-05-13',studentId:8,lessons:4,amount:2000,method:'безнал'},
+  {id:27,date:'2026-05-13',studentId:3,lessons:8,amount:3200,method:'безнал'},
+  {id:28,date:'2026-05-14',studentId:15,lessons:4,amount:2000,method:'безнал'},
+  {id:29,date:'2026-05-14',studentId:6,lessons:4,amount:1600,method:'безнал'},
+  {id:30,date:'2026-05-15',studentId:9,lessons:8,amount:3200,method:'нал'},
+  {id:31,date:'2026-05-15',studentId:7,lessons:1,amount:500,method:'нал'},
+  {id:32,date:'2026-05-15',studentId:13,lessons:2,amount:1000,method:'нал'},
+  {id:33,date:'2026-05-26',studentId:11,lessons:1,amount:600,method:'безнал'},
+  {id:34,date:'2026-05-26',studentId:13,lessons:1,amount:500,method:'нал'},
+  {id:35,date:'2026-05-28',studentId:2,lessons:8,amount:3200,method:'нал'},
+  {id:36,date:'2026-05-29',studentId:13,lessons:1,amount:500,method:'безнал'},
+  {id:37,date:'2026-06-03',studentId:6,lessons:4,amount:1600,method:'безнал'},
+  {id:38,date:'2026-06-05',studentId:7,lessons:1,amount:500,method:'нал'},
+]);
+let rents = load('dance_rents',[]);
+
+// ══ HELPERS ═══════════════════════════════════════════════════════
+function nid(arr){return arr.length?Math.max(...arr.map(x=>x.id))+1:1}
+function fmt(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}.${m}.${y}`}
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function monthStr(d){return d?d.slice(0,7):''}
+function stuName(id){return(students.find(s=>s.id===id)||{name:'—'}).name}
+function grpLabel(id){return(groups.find(g=>g.id===id)||{label:id}).label}
+function grpBadge(gid){
+  const cls={'Зал1_10:00':'bg1','Зал2_19:30':'bg2','Зал3_17:30':'bg3'}[gid]||'bg1';
+  const cls2=gid==='Зал1_10:00'?'bg1':gid==='Зал2_19:30'?'bg2':'bg3';
+  return`<span class="${cls2}">${grpLabel(gid)}</span>`
+}
+function balColor(b){return b>0?'var(--green)':b<0?'var(--red)':'var(--muted)'}
+
+function paidLessons(id,beforeDate=null){
+  return payments.filter(p=>p.studentId===id&&(!beforeDate||p.date<=beforeDate)).reduce((s,p)=>s+(p.lessons||0),0);
+}
+function attendedLessons(id,beforeDate=null){
+  return attendance.filter(a=>a.studentId===id&&(!beforeDate||a.date<=beforeDate)).length;
+}
+function balance(id,beforeDate=null){
+  return paidLessons(id,beforeDate)-attendedLessons(id,beforeDate);
+}
+
+// ══ TABS ══════════════════════════════════════════════════════════
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='overview')renderOverview();
+  if(id==='students')renderStudents();
+  if(id==='attendance')renderAttendance();
+  if(id==='payments')renderPayments();
+  if(id==='finance')renderFinance();
+  if(id==='balance')renderBalance();
+}
+
+// ══ OVERVIEW ══════════════════════════════════════════════════════
+function renderOverview(){
+  const totalInc=payments.reduce((s,p)=>s+p.amount,0);
+  const cash=payments.filter(p=>p.method==='нал').reduce((s,p)=>s+p.amount,0);
+  const card=payments.filter(p=>p.method==='безнал').reduce((s,p)=>s+p.amount,0);
+  const debtors=students.filter(s=>balance(s.id)<0&&!s.frozen);
+  const frozen=students.filter(s=>s.frozen);
+  document.getElementById('stats-overview').innerHTML=`
+    <div class="stat"><div class="stat-label">Общий доход</div><div class="stat-val">${totalInc.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Учеников</div><div class="stat-val">${students.length}</div><div class="stat-sub">${groups.length} группы</div></div>
+    <div class="stat"><div class="stat-label">Наличные</div><div class="stat-val" style="color:#e8a030">${cash.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Безнал</div><div class="stat-val" style="color:#5ab4e8">${card.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Посещений</div><div class="stat-val">${attendance.length}</div></div>
+    <div class="stat"><div class="stat-label">Должники</div><div class="stat-val" style="color:${debtors.length?'var(--red)':'var(--green)'}">${debtors.length}</div></div>
+  `;
+  // groups table
+  document.getElementById('groups-table').innerHTML=`<table>
+    <thead><tr><th>Группа</th><th>Зал</th><th>Уч.</th><th>Посещ.</th><th></th></tr></thead>
+    <tbody>${groups.map(g=>`<tr>
+      <td>${grpBadge(g.id)}</td>
+      <td style="color:var(--dim);font-size:12px">${g.addr}</td>
+      <td>${students.filter(s=>s.group===g.id).length}</td>
+      <td>${attendance.filter(a=>a.group===g.id).length}</td>
+      <td><button class="btn btn-red btn-sm" style="padding:3px 8px;font-size:10px" onclick="deleteGroup('${g.id}')">×</button></td>
+    </tr>`).join('')}</tbody></table>`;
+  // debtors
+  const dl=document.getElementById('debtors-list');
+  dl.innerHTML=debtors.length?debtors.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b)">
+    <span>${s.name}</span><span style="color:var(--red);font-weight:700">${balance(s.id)}</span></div>`).join('')
+    :'<span style="color:var(--muted);font-size:13px">Все в балансе ✓</span>';
+  // income chart
+  const byS={};payments.forEach(p=>{byS[p.studentId]=(byS[p.studentId]||0)+p.amount});
+  const sorted=Object.entries(byS).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  const mx=(sorted[0] ? sorted[0][1] : 1);
+  document.getElementById('income-chart').innerHTML=sorted.map(([id,amt])=>`
+    <div class="income-bar-row">
+      <div class="income-bar-name">${stuName(+id)}</div>
+      <div class="income-bar-track"><div class="income-bar-fill" style="width:${(amt/mx*100).toFixed(1)}%"></div></div>
+      <div class="income-bar-val">${amt.toLocaleString('ru')} ₽</div>
+    </div>`).join('');
+}
+
+function deleteGroup(id){
+  if(students.filter(s=>s.group===id).length>0){alert('Нельзя удалить группу в которой есть ученики');return;}
+  if(!confirm('Удалить группу?'))return;
+  groups=groups.filter(g=>g.id!==id);
+  save('dance_groups',groups);
+  renderOverview();
+}
+// ══ STUDENTS ══════════════════════════════════════════════════════
+let stuGFilter='all';
+let showFrozen=false;
+function toggleShowFrozen(){showFrozen=!showFrozen;document.getElementById('btn-show-frozen').className='btn btn-sm '+(showFrozen?'btn-blue':'btn-dim');document.getElementById('btn-show-frozen').textContent=showFrozen?'❄ Скрыть замороженных':'❄ Показать замороженных';renderStudents();}
+function renderStudentFilters(){
+  const el=document.getElementById('stu-filters');
+  el.innerHTML=[{id:'all',label:'Все'},...groups].map(g=>`
+    <div class="filter-pill${stuGFilter===g.id?' on':''}" onclick="setStuFilter('${g.id}')">${g.label||g.id==='all'?g.label||'Все':grpLabel(g.id)}</div>
+  `).join('');
+}
+function setStuFilter(g){stuGFilter=g;renderStudents()}
+function renderStudents(){
+  renderStudentFilters();
+  const q=(document.getElementById('stu-search').value||'').toLowerCase();
+  const list=students.filter(s=>(stuGFilter==='all'||s.group===stuGFilter)&&s.name.toLowerCase().includes(q)&&(showFrozen||!s.frozen));
+  const el=document.getElementById('students-list');
+  if(!list.length){el.innerHTML='<div style="color:var(--muted);padding:20px;text-align:center">Нет учеников</div>';return}
+  el.innerHTML=list.map(s=>{
+    const bal=balance(s.id);
+    const att=attendedLessons(s.id);
+    const paid=paidLessons(s.id);
+    const paidAmt=payments.filter(p=>p.studentId===s.id).reduce((sum,p)=>sum+p.amount,0);
+    return`<div class="stu-card" style="${s.frozen?'opacity:0.6;border-color:#1a3a5a':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <div class="stu-name">${s.frozen?'❄ ':''}${s.name}</div>
+          ${grpBadge(s.group)}
+          ${s.frozen?'<span style="margin-left:6px;font-size:10px;color:#5ab4e8;background:#0a1a2a;border:1px solid #0a3a5a;padding:2px 7px;border-radius:3px">заморожен</span>':''}
+        </div>
+        <div class="stu-bal" style="color:${s.frozen?'var(--muted)':balColor(bal)}">${bal>0?'+':''}${bal}</div>
+      </div>
+      <div class="stu-stats">
+        <span>Посещено: <span>${att}</span></span>
+        <span>Оплачено занятий: <span>${paid}</span></span>
+        <span>Сумма: <span style="color:var(--gl)">${paidAmt.toLocaleString('ru')} ₽</span></span>
+      </div>
+      <div class="stu-btns">
+        <button class="btn btn-gold btn-sm" style="flex:1" onclick="openEdit(${s.id})">✏ Изменить</button>
+        <button class="btn ${s.frozen?'btn-green':'btn-blue'} btn-sm" onclick="toggleFreeze(${s.id})">${s.frozen?'▶ Активировать':'❄ Заморозить'}</button>
+        <button class="btn btn-red btn-sm" onclick="deleteStudent(${s.id})">Удалить</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══ ATTENDANCE ════════════════════════════════════════════════════
+let attGFilter='all';
+let selectedAtt=new Set();
+function renderAttFilters(){
+  document.getElementById('att-filters').innerHTML=[{id:'all',label:'Все'},...groups].map(g=>`
+    <div class="filter-pill${attGFilter===g.id?' on':''}" onclick="setAttFilter('${g.id}')">${g.label||(g.id==='all'?'Все':grpLabel(g.id))}</div>`).join('');
+}
+function setAttFilter(g){attGFilter=g;selectedAtt=new Set();renderAttendance()}
+function renderAttendance(){
+  renderAttFilters();
+  const list=[...attendance].filter(a=>attGFilter==='all'||a.group===attGFilter).sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('att-count-label').textContent=`Посещения — ${list.length}`;
+  document.getElementById('att-del-btn').style.display=selectedAtt.size?'':'none';
+  document.getElementById('att-list').innerHTML=list.map(a=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #1e1c18">
+      <input type="checkbox" ${selectedAtt.has(a.id)?'checked':''} onchange="toggleAtt(${a.id},this.checked)" style="width:16px;height:16px;flex-shrink:0">
+      <div style="flex:1">
+        <div style="font-size:13px">${stuName(a.studentId)}</div>
+        <div style="font-size:11px;color:var(--dim)">${fmt(a.date)} · ${grpLabel(a.group)}</div>
+      </div>
+      <button class="btn btn-red btn-sm" style="padding:4px 8px" onclick="deleteAttend(${a.id})">×</button>
+    </div>`).join('');
+}
+function toggleAtt(id,checked){
+  if(checked)selectedAtt.add(id);else selectedAtt.delete(id);
+  document.getElementById('att-del-btn').style.display=selectedAtt.size?'':'none';
+}
+function deleteAttend(id){attendance=attendance.filter(a=>a.id!==id);save('dance_att2',attendance);renderAttendance()}
+function deleteSelectedAttend(){
+  attendance=attendance.filter(a=>!selectedAtt.has(a.id));
+  selectedAtt=new Set();save('dance_att2',attendance);renderAttendance();
+}
+
+// ══ PAYMENTS ══════════════════════════════════════════════════════
+let payMFilter='all';
+function renderPayFilters(){
+  document.getElementById('pay-filters').innerHTML=[['all','Все'],['нал','💵 Нал'],['безнал','💳 Безнал']].map(([m,l])=>`
+    <div class="filter-pill${payMFilter===m?' on':''}" onclick="setPayFilter('${m}')">${l}</div>`).join('');
+}
+function setPayFilter(m){payMFilter=m;renderPayments()}
+function renderPayments(){
+  renderPayFilters();
+  const list=[...payments].filter(p=>payMFilter==='all'||p.method===payMFilter).sort((a,b)=>b.date.localeCompare(a.date));
+  const total=list.reduce((s,p)=>s+p.amount,0);
+  document.getElementById('pay-total').textContent=`Итого: ${total.toLocaleString('ru')} ₽`;
+  document.getElementById('pay-list').innerHTML=list.map(p=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #1e1c18">
+      <div style="flex:1">
+        <div style="font-size:13px">${stuName(p.studentId)}</div>
+        <div style="font-size:11px;color:var(--dim)">${fmt(p.date)} · ${p.lessons!=null?p.lessons+' зан.':'?'}</div>
+      </div>
+      <span class="${p.method==='нал'?'cash':'card-pay'}">${p.method}</span>
+      <div style="font-weight:700;color:var(--gl);min-width:70px;text-align:right">${p.amount.toLocaleString('ru')} ₽</div>
+      <button class="btn btn-red btn-sm" style="padding:4px 8px" onclick="deletePay(${p.id})">×</button>
+    </div>`).join('');
+}
+function deletePay(id){payments=payments.filter(p=>p.id!==id);save('dance_pay2',payments);renderPayments()}
+
+// ══ FINANCE ═══════════════════════════════════════════════════════
+const MONTHS_RU=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+let finDate=new Date();
+function finMonth(d){finDate.setMonth(finDate.getMonth()+d);renderFinance()}
+function renderFinance(){
+  const y=finDate.getFullYear(),m=finDate.getMonth();
+  const mStr=`${y}-${String(m+1).padStart(2,'0')}`;
+  document.getElementById('fin-month-label').textContent=`${MONTHS_RU[m]} ${y}`;
+  const mInc=payments.filter(p=>monthStr(p.date)===mStr).reduce((s,p)=>s+p.amount,0);
+  const mCash=payments.filter(p=>monthStr(p.date)===mStr&&p.method==='нал').reduce((s,p)=>s+p.amount,0);
+  const mRent=rents.filter(r=>r.month===mStr).reduce((s,r)=>s+r.amount,0);
+  const mProfit=mInc-mRent;
+  document.getElementById('fin-stats').innerHTML=`
+    <div class="stat"><div class="stat-label">Доход</div><div class="stat-val">${mInc.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Аренда</div><div class="stat-val" style="color:var(--red)">${mRent.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Наличные</div><div class="stat-val" style="color:#e8a030">${mCash.toLocaleString('ru')} ₽</div></div>
+    <div class="stat"><div class="stat-label">Прибыль</div><div class="stat-val" style="color:${mProfit>=0?'var(--green)':'var(--red)'}">${mProfit.toLocaleString('ru')} ₽</div></div>
+  `;
+  // rent list
+  const mRents=rents.filter(r=>r.month===mStr);
+  document.getElementById('rent-list').innerHTML=mRents.length?mRents.map(r=>`
+    <div class="rent-row">
+      <div><div style="font-size:13px;font-weight:600">${r.hall}</div><div style="font-size:11px;color:var(--dim)">${r.note||''}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-weight:700;color:var(--red)">${r.amount.toLocaleString('ru')} ₽</span>
+        <button class="btn btn-red btn-sm" style="padding:4px 8px" onclick="deleteRent(${r.id})">×</button>
+      </div>
+    </div>`).join('')
+    :'<div style="padding:14px;color:var(--muted);font-size:13px">Нет записей об аренде</div>';
+  // month summary
+  const allMonths=[...new Set([...payments.map(p=>monthStr(p.date)),...rents.map(r=>r.month)])].sort().reverse();
+  document.getElementById('month-summary').innerHTML=allMonths.map(mo=>{
+    const inc=payments.filter(p=>monthStr(p.date)===mo).reduce((s,p)=>s+p.amount,0);
+    const rent=rents.filter(r=>r.month===mo).reduce((s,r)=>s+r.amount,0);
+    const profit=inc-rent;
+    const[my,mm]=mo.split('-');
+    return`<tr>
+      <td>${MONTHS_RU[+mm-1]} ${my}</td>
+      <td style="color:var(--gl)">${inc.toLocaleString('ru')} ₽</td>
+      <td style="color:var(--red)">${rent?rent.toLocaleString('ru')+' ₽':'—'}</td>
+      <td style="color:${profit>=0?'var(--green)':'var(--red)'};font-weight:700">${profit.toLocaleString('ru')} ₽</td>
+    </tr>`;
+  }).join('');
+}
+function deleteRent(id){rents=rents.filter(r=>r.id!==id);save('dance_rents',rents);renderFinance()}
+
+// ══ BALANCE (ОСТАТКИ) ═════════════════════════════════════════════
+let balGFilter='all';
+function renderBalFilters(){
+  document.getElementById('bal-filters').innerHTML=[{id:'all',label:'Все'},...groups].map(g=>`
+    <div class="filter-pill${balGFilter===g.id?' on':''}" onclick="setBalFilter('${g.id}')">${g.label||(g.id==='all'?'Все':grpLabel(g.id))}</div>`).join('');
+}
+function setBalFilter(g){balGFilter=g;renderBalance()}
+function renderBalance(){
+  renderBalFilters();
+  const dateVal=document.getElementById('bal-date').value||todayStr();
+  const list=students.filter(s=>(balGFilter==='all'||s.group===balGFilter)&&!s.frozen).sort((a,b)=>a.name.localeCompare(b.name));
+  const el=document.getElementById('bal-list');
+  el.innerHTML=list.map(s=>{
+    const bal=balance(s.id,dateVal);
+    const paidL=paidLessons(s.id,dateVal);
+    const attL=attendedLessons(s.id,dateVal);
+    const pct=paidL>0?Math.max(0,bal/paidL*100):0;
+    return`<div class="stu-card" style="padding:12px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:14px;font-weight:600">${s.name}</div>
+          <div style="font-size:11px;color:var(--dim);margin-top:3px">${grpLabel(s.group)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:22px;font-weight:700;color:${balColor(bal)}">${bal>0?'+':''}${bal}</div>
+          <div style="font-size:10px;color:var(--dim)">${attL} из ${paidL} исп.</div>
+        </div>
+      </div>
+      ${paidL>0?`<div class="bal-bar"><div class="bal-fill" style="width:${Math.min(100,pct).toFixed(0)}%"></div></div>`:''}
+    </div>`;
+  }).join('');
+  // share text
+  const d=fmt(dateVal);
+  const lines=list.map(s=>{
+    const bal=balance(s.id,dateVal);
+    const sign=bal>0?'+':'';
+    return`${s.name}: ${sign}${bal} занятий`;
+  });
+  document.getElementById('share-text').textContent=`Остаток занятий на ${d}:\n\n${lines.join('\n')}`;
+}
+function copyBalance(){
+  const txt=document.getElementById('share-text').textContent;
+  navigator.clipboard.writeText(txt).then(()=>alert('Скопировано!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('Скопировано!');
+  });
+}
+
+// ══ MODALS ════════════════════════════════════════════════════════
+function openModal(id){
+  document.getElementById(id).classList.remove('hidden');
+  if(id==='mLesson'){
+    document.getElementById('ml-date').value=todayStr();
+    fillGroupSelect('ml-group');
+    renderCheckList();
+  }
+  if(id==='mPayment'){
+    document.getElementById('mp-date').value=todayStr();
+    fillStudentSelect('mp-student');
+    setMethod('безнал');
+  }
+  if(id==='mStudent') fillGroupSelect('ms-group');
+  if(id==='mRent'){
+    const now=new Date();
+    document.getElementById('mr-month').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  }
+}
+function closeModal(id){document.getElementById(id).classList.add('hidden')}
+
+function fillGroupSelect(selId){
+  document.getElementById(selId).innerHTML=groups.map(g=>`<option value="${g.id}">${g.label} — ${g.addr}</option>`).join('');
+}
+function fillStudentSelect(selId){
+  document.getElementById(selId).innerHTML=[...students].sort((a,b)=>a.name.localeCompare(b.name))
+    .map(s=>`<option value="${s.id}">${s.name} (${grpLabel(s.group)})</option>`).join('');
+}
+
+// payment method toggle
+let payMethod='безнал';
+function setMethod(m){
+  payMethod=m;
+  document.getElementById('tb-cash').classList.toggle('on',m==='нал');
+  document.getElementById('tb-card').classList.toggle('on',m==='безнал');
+}
+
+// checklist for lesson
+function renderCheckList(){
+  const gid=document.getElementById('ml-group').value;
+  const date=document.getElementById('ml-date').value;
+  const already=attendance.filter(a=>a.date===date&&a.group===gid).map(a=>a.studentId);
+  const stuList=students.filter(s=>s.group===gid&&!s.frozen);
+  document.getElementById('ml-count-label').textContent=`Ученики (${stuList.length})`;
+  document.getElementById('ml-checklist').innerHTML=stuList.map(s=>`
+    <div class="check-item${already.includes(s.id)?' on':''}" id="ci-${s.id}" onclick="toggleCheck(${s.id})">
+      <div class="check-box">${already.includes(s.id)?'✓':''}</div>
+      <span style="font-size:13px">${s.name}</span>
+    </div>`).join('');
+}
+function toggleCheck(id){
+  const el=document.getElementById('ci-'+id);
+  el.classList.toggle('on');
+  el.querySelector('.check-box').textContent=el.classList.contains('on')?'✓':'';
+}
+
+// ── SAVE ACTIONS ──────────────────────────────────────────────────
+function addStudent(){
+  const name=document.getElementById('ms-name').value.trim();
+  const group=document.getElementById('ms-group').value;
+  if(!name)return;
+  students.push({id:nid(students),name,group});
+  save('dance_students2',students);
+  closeModal('mStudent');
+  document.getElementById('ms-name').value='';
+  renderStudents();
+}
+
+function openEdit(id){
+  const s=students.find(x=>x.id===id);if(!s)return;
+  document.getElementById('mes-id').value=id;
+  document.getElementById('mes-name').value=s.name;
+  fillGroupSelect('mes-group');
+  document.getElementById('mes-group').value=s.group;
+  openModal('mEditStudent');
+}
+function saveEditStudent(){
+  const id=+document.getElementById('mes-id').value;
+  const name=document.getElementById('mes-name').value.trim();
+  const group=document.getElementById('mes-group').value;
+  if(!name)return;
+  students=students.map(s=>s.id===id?{...s,name,group}:s);
+  save('dance_students2',students);
+  closeModal('mEditStudent');
+  renderStudents();
+}
+function toggleFreeze(id){
+  students=students.map(s=>s.id===id?{...s,frozen:!s.frozen}:s);
+  save('dance_students2',students);
+  renderStudents();
+  renderOverview();
+}
+function deleteStudent(id){
+  if(!confirm('Удалить ученика и все его записи?'))return;
+  students=students.filter(s=>s.id!==id);
+  attendance=attendance.filter(a=>a.studentId!==id);
+  payments=payments.filter(p=>p.studentId!==id);
+  save('dance_students2',students);save('dance_att2',attendance);save('dance_pay2',payments);
+  renderStudents();
+}
+
+function saveLesson(){
+  const date=document.getElementById('ml-date').value;
+  const group=document.getElementById('ml-group').value;
+  const checked=[...document.querySelectorAll('.check-item.on')].map(el=>+el.id.replace('ci-',''));
+  // remove old records for this date+group
+  attendance=attendance.filter(a=>!(a.date===date&&a.group===group));
+  let maxId=attendance.length?Math.max(...attendance.map(x=>x.id)):0;
+  checked.forEach(sid=>attendance.push({id:++maxId,date,group,studentId:sid}));
+  save('dance_att2',attendance);
+  closeModal('mLesson');
+  renderAttendance();
+}
+
+function savePayment(){
+  const date=document.getElementById('mp-date').value;
+  const studentId=+document.getElementById('mp-student').value;
+  const lessons=document.getElementById('mp-lessons').value;
+  const amount=+document.getElementById('mp-amount').value;
+  if(!studentId||!amount)return;
+  payments.push({id:nid(payments),date,studentId,lessons:lessons?+lessons:null,amount,method:payMethod});
+  save('dance_pay2',payments);
+  closeModal('mPayment');
+  document.getElementById('mp-lessons').value='';
+  document.getElementById('mp-amount').value='';
+  renderPayments();
+}
+
+function saveRent(){
+  const hall=document.getElementById('mr-hall').value;
+  const month=document.getElementById('mr-month').value;
+  const amount=+document.getElementById('mr-amount').value;
+  const note=document.getElementById('mr-note').value.trim();
+  if(!amount||!month)return;
+  rents.push({id:nid(rents),hall,month,amount,note});
+  save('dance_rents',rents);
+  closeModal('mRent');
+  document.getElementById('mr-amount').value='';
+  document.getElementById('mr-note').value='';
+  renderFinance();
+}
+
+function updateGroupId(){
+  const addrSel=document.getElementById('mg-addr').value;
+  const customWrap=document.getElementById('mg-addr-custom-wrap');
+  customWrap.style.display=addrSel==='Другой'?'block':'none';
+  const time=document.getElementById('mg-time').value||'00:00';
+  const num=groups.length+1;
+  document.getElementById('mg-id').value='Зал'+num+'_'+time;
+  document.getElementById('mg-label').value='Зал '+num+' · '+time;
+}
+function saveGroup(){
+  const id=document.getElementById('mg-id').value.trim()||('Зал'+(groups.length+1)+'_'+document.getElementById('mg-time').value);
+  const label=document.getElementById('mg-label').value.trim();
+  const addrSel=document.getElementById('mg-addr').value;
+  const addr=addrSel==='Другой'?(document.getElementById('mg-addr-custom').value.trim()||'Зал'):addrSel;
+  if(!label||!addr){alert('Заполните название и время');return;}
+  if(groups.find(g=>g.id===id)){alert('Такая группа уже существует');return;}
+  groups.push({id,label,addr});
+  save('dance_groups',groups);
+  closeModal('mGroup');
+  document.getElementById('mg-time').value='';
+  document.getElementById('mg-label').value='';
+  renderOverview();
+}
+
+// close on overlay click
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hidden')});
+});
+
+// ══ INIT ══════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('bal-date').value=todayStr();
+  renderOverview();
+  renderBalance();
+});
+</script>
+</body>
+</html>
